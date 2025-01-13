@@ -8,7 +8,7 @@ const Sidebar = () => {
       <ul className="sidebar__menu">
         <li className="sidebar__menu-item">
           <FaHome className="sidebar__icon" />
-         <a href='/'>Dashboard</a> 
+         <a href='/Dashboard'>Dashboard</a> 
         </li>
         <li className="sidebar__menu-item">
           <FaBuilding className="sidebar__icon" />

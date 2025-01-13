@@ -66,6 +66,12 @@ const Home = () => {
     }
   };
 
+  // Get property details by id
+  const getPropertyDetails = (propertyId) => {
+    const property = properties.find((prop) => prop.id === propertyId);
+    return property ? { room_no: property.room_no, type: property.type } : { room_no: 'Unknown', type: 'Unknown' };
+  };
+
   return (
     <div className="dashboard">
       <Sidebar />
@@ -89,19 +95,28 @@ const Home = () => {
               <table className="dashboard__table">
                 <thead>
                   <tr>
-                    <th>Property</th>
+                    <th>Room No</th>
+                    <th>Type</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Price</th>
                     <th>Status</th>
-                    <th>Date</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {bookings.map((booking) => (
-                    <tr key={booking.id}>
-                      <td>{booking.property}</td>
-                      <td>{booking.status}</td>
-                      <td>{booking.booking_date}</td> {/* Ensure you're using the correct date field */}
-                    </tr>
-                  ))}
+                  {bookings.map((booking) => {
+                    const propertyDetails = getPropertyDetails(booking.property);
+                    return (
+                      <tr key={booking.id}>
+                        <td>{propertyDetails.room_no}</td>
+                        <td>{propertyDetails.type}</td>
+                        <td>{booking.start_date}</td>
+                        <td>{booking.end_date}</td>
+                        <td>{booking.price}</td>
+                        <td>{booking.status}</td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             ) : (

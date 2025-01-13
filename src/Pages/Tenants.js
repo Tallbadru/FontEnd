@@ -1,31 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Header from '../Component/Header';
 import Sidebar from '../Component/Sidebar';
 import Footer from '../Component/Footer';
 
-
 const Profile = () => {
   const [tenant, setTenant] = useState({
-    name: 'John Doe',
-    contactInfo: 'john.doe@example.com',
-    leaseDetails: '1-year lease, starts Jan 2025',
+    name: '',
+    contact_info: '', // Make sure the field names match the API response
+    lease_details: '',
   });
 
   const [editing, setEditing] = useState(false);
   const [formData, setFormData] = useState(tenant);
 
+  // Fetch tenant information when the component mounts
+  useEffect(() => {
+    const fetchTenant = async () => {
+      try {
+        const response = await axios.get('http://127.0.0.1:8000/api/tenant/1'); // Assuming tenant ID is 1
+        setTenant(response.data); // Directly set tenant data (no need for [0])
+        setFormData(response.data); // Set formData as well
+      } catch (error) {
+        console.error('Error fetching tenant data:', error);
+      }
+    };
+
+    fetchTenant();
+  }, []);
+
+  // Handle editing mode toggle
   const handleEditClick = () => {
     setEditing(true);
   };
 
   const handleCancelEdit = () => {
     setEditing(false);
-    setFormData(tenant);
+    setFormData(tenant); // Reset to original tenant data
   };
 
-  const handleSaveEdit = () => {
-    setTenant(formData);
-    setEditing(false);
+  const handleSaveEdit = async () => {
+    try {
+      // Save the updated data
+      await axios.put(`http://127.0.0.1:8000/api/tenant/1`, formData); // Assuming tenant ID is 1
+      setTenant(formData);
+      setEditing(false);
+    } catch (error) {
+      console.error('Error saving tenant data:', error);
+    }
   };
 
   const handleChange = (e) => {
@@ -65,13 +87,13 @@ const Profile = () => {
               {editing ? (
                 <input
                   type="text"
-                  name="contactInfo"
-                  value={formData.contactInfo}
+                  name="contact_info" // Ensure you're using the correct API field
+                  value={formData.contact_info}
                   onChange={handleChange}
                   className="profile__input"
                 />
               ) : (
-                <span>{tenant.contactInfo}</span>
+                <span>{tenant.contact_info}</span> // Display the correct API field
               )}
             </div>
 
@@ -79,13 +101,13 @@ const Profile = () => {
               <label>Lease Details</label>
               {editing ? (
                 <textarea
-                  name="leaseDetails"
-                  value={formData.leaseDetails}
+                  name="lease_details" // Ensure you're using the correct API field
+                  value={formData.lease_details}
                   onChange={handleChange}
                   className="profile__input"
                 />
               ) : (
-                <span>{tenant.leaseDetails}</span>
+                <span>{tenant.lease_details}</span> // Display the correct API field
               )}
             </div>
           </div>
@@ -114,24 +136,3 @@ const Profile = () => {
 };
 
 export default Profile;
-
-    // import React from 'react'
-    // import './Dashboard.css'
-    // import Header from '../Component/Header'
-    // import MainContent from '../Component/MainContent'
-    // import Sidebar from '../Component/Sidebar'
-    // import Footer from '../Component/Footer'
-    // const Home = () => {
-    //   return (
-    
-    //     <div className="dashboard">
-    //     <Sidebar />
-    //     <div className="main">0
-    //       <Header />
-    //       <MainContent />
-    //       <Footer />
-    //     </div>
-    //   </div>
-    //   )
-    // }
-    // export default Home

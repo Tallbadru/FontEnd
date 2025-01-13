@@ -1,3 +1,4 @@
+/* General Modal Styling */
 .modal {
     position: fixed;
     top: 0;
@@ -12,18 +13,19 @@
   }
   
   .modal__content {
-    background: white;
+    background: #fff;
     padding: 20px;
-    border-radius: 5px;
-    width: 300px;
-    max-width: 100%;
+    border-radius: 8px;
+    width: 400px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
   }
   
   .modal__close {
     position: absolute;
     top: 10px;
     right: 10px;
-    font-size: 24px;
+    font-size: 20px;
     cursor: pointer;
   }
   
@@ -33,41 +35,63 @@
   
   .modal__form-group label {
     display: block;
+    font-size: 14px;
+    color: #333;
     margin-bottom: 5px;
   }
   
-  .modal__form-group input {
+  .modal__form-group input,
+  .modal__form-group select {
     width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: border-color 0.2s ease;
+  }
+  
+  .modal__form-group input:focus,
+  .modal__form-group select:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  .modal__form-group select {
+    appearance: none;
+    background: #f9f9f9;
+    cursor: pointer;
+  }
+  
+  .modal__form-group select option {
+    padding: 10px;
+  }
+  
+  .modal__footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
   }
   
   .modal__button {
-    background-color: #4caf50;
-    color: white;
-    padding: 10px;
+    padding: 10px 15px;
+    background: #007bff;
+    color: #fff;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s ease;
   }
   
   .modal__button:hover {
-    background-color: #45a049;
+    background: #0056b3;
   }
   
   .modal__button--close {
-    background-color: #f5f5f5;
-    color: #333;
-    border: 1px solid #ccc;
-    margin-left: 10px;
-    padding: 8px 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    background: #6c757d;
   }
   
   .modal__button--close:hover {
-    background-color: #e0e0e0;
+    background: #5a6268;
   }
   
