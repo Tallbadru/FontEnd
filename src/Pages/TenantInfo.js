@@ -12,7 +12,7 @@ const Profile = () => {
     email: '',
   });
 
-  const [editing, setEditing] = useState(false);
+  const [editing, setEditing] = useState(true); // Start in editing mode if tenant info doesn't exist
   const [formData, setFormData] = useState(tenant);
   const [isNewTenant, setIsNewTenant] = useState(true);
 
@@ -25,6 +25,7 @@ const Profile = () => {
           setTenant(response.data);
           setFormData(response.data);
           setIsNewTenant(false);
+          setEditing(false); // Disable editing mode if tenant info exists
         }
       } catch (error) {
         console.error('Error fetching tenant data:', error);
@@ -149,9 +150,11 @@ const Profile = () => {
                 <button onClick={handleSaveEdit} className="profile__button save">
                   Save
                 </button>
-                <button onClick={handleCancelEdit} className="profile__button cancel">
-                  Cancel
-                </button>
+                {!isNewTenant && (
+                  <button onClick={handleCancelEdit} className="profile__button cancel">
+                    Cancel
+                  </button>
+                )}
               </>
             ) : (
               <button onClick={handleEditClick} className="profile__button edit">

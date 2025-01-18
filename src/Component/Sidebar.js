@@ -16,7 +16,7 @@ const Sidebar = () => {
         </li>
         <li className="sidebar__menu-item">
           <FaUsers className="sidebar__icon" />
-          <a href='/tenants'>Tenants</a>   
+          <a href='/tenantInfo'>TenantsInfo</a>   
         </li>
         <li className="sidebar__menu-item">
           <FaMoneyBillWave className="sidebar__icon" />

@@ -1,38 +1,38 @@
 import React, { useState } from "react";
-import "./Login.css";
+import "./Login.css"; // Reuse the same CSS as Login
 
-const Login = () => {
-  const [email, setEmail] = useState("");
+const Register = () => {
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const loginData = {
-      username: email,
+    const registerData = {
+      username: username,
       password: password,
     };
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/login/", {
+      const response = await fetch("http://127.0.0.1:8000/api/user/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(loginData),
+        body: JSON.stringify(registerData),
       });
 
       const result = await response.json();
 
       if (response.ok) {
-        window.location.href = "/dashboard";
-        console.log("Login successful:", result);
+        window.location.href = "/";
+        console.log("Registration successful:", result);
       } else {
         setErrorMessage(result.message);
       }
     } catch (error) {
-      console.error("Error during login:", error);
+      console.error("Error during registration:", error);
       setErrorMessage("An error occurred. Please try again later.");
     }
   };
@@ -40,21 +40,21 @@ const Login = () => {
   return (
     <div className="login-container">
       <div className="login-card">
-        <h1>Welcome Babu Rental House System</h1>
-        <p>Please login to your account</p>
+        <h1>Register Form</h1>
+        <p>Please register a new account</p>
 
         {errorMessage && <p className="error-message">{errorMessage}</p>}
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="email">Username</label>
+            <label htmlFor="username">Username</label>
             <input
               type="text"
-              id="email"
-              name="email"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              id="username"
+              name="username"
+              placeholder="Enter your username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               required
             />
           </div>
@@ -73,10 +73,10 @@ const Login = () => {
           </div>
 
           <button type="submit" className="btn">
-            Login
+            Register
           </button>
-          <p className="register-link">
-            Don't have an account? <a href="/register">Register</a>
+          <p className="login-link">
+            Already have an account? <a href="/">Login</a>
           </p>
         </form>
       </div>
@@ -84,4 +84,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

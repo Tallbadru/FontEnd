@@ -5,6 +5,7 @@ import Header from '../Component/Header';
 import Sidebar from '../Component/Sidebar';
 import Footer from '../Component/Footer';
 import Modal from '../Component/Modal';
+import Swal from 'sweetalert2';
 
 const Home = () => {
   const [bookings, setBookings] = useState([]);
@@ -61,8 +62,19 @@ const Home = () => {
       const updatedProperties = await axios.get('http://127.0.0.1:8000/api/property/');
       setBookings(updatedBookings.data);
       setProperties(updatedProperties.data);
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: 'Property booked successfully!',
+      });
     } catch (error) {
       console.error('Error creating booking:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Failed to book the property. Please try again.',
+      });
     }
   };
 
