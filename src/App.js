@@ -8,6 +8,7 @@ import TenantInfo from './Pages/TenantInfo';
 import RentPayments from './Pages/RentPayments';
 import Maintenance from './Pages/Maintenance';
 import Reports from './Pages/Reports';
+import Logout from './Pages/Logout';
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
         <Route path="/rentPayments" element={<RentPayments />} />
         <Route path="/maintenance" element={<Maintenance />} />
         <Route path="/reports" element={<Reports />} />
+        <Route path="/logout" element={<Logout />} />
       </Routes>
     </Router>
   );

@@ -10,22 +10,32 @@ const Profile = () => {
     name: '',
     contact_info: '',
     email: '',
+    username: '',
+    password: '', // Keep password for editing purposes
   });
 
-  const [editing, setEditing] = useState(true); // Start in editing mode if tenant info doesn't exist
+  const [editing, setEditing] = useState(false); // Start in non-editing mode
   const [formData, setFormData] = useState(tenant);
-  const [isNewTenant, setIsNewTenant] = useState(true);
+  const [tenantId, setTenantId] = useState(null);
 
   // Fetch tenant information when the component mounts
   useEffect(() => {
     const fetchTenant = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/tenant/1'); // Assuming tenant ID is 1
-        if (response.data) {
-          setTenant(response.data);
-          setFormData(response.data);
-          setIsNewTenant(false);
-          setEditing(false); // Disable editing mode if tenant info exists
+        // Fetch the session to get the logged-in tenant's ID
+        const sessionResponse = await axios.get('http://127.0.0.1:8000/api/session'); // Adjust this URL to match your backend's session endpoint
+        const tenantIdFromSession = sessionResponse.data.tenant_id;
+
+        if (tenantIdFromSession) {
+          setTenantId(tenantIdFromSession);
+          // Fetch tenant data using the tenant ID
+          const response = await axios.get(`http://127.0.0.1:8000/api/tenant/${tenantIdFromSession}/`);
+          if (response.data) {
+            setTenant(response.data);
+            setFormData(response.data);
+          }
+        } else {
+          console.error('Tenant ID not found in session.');
         }
       } catch (error) {
         console.error('Error fetching tenant data:', error);
@@ -33,7 +43,7 @@ const Profile = () => {
     };
 
     fetchTenant();
-  }, []);
+  }, []); // Empty dependency array to run only once when the component mounts
 
   // Handle editing mode toggle
   const handleEditClick = () => {
@@ -47,20 +57,9 @@ const Profile = () => {
 
   const handleSaveEdit = async () => {
     try {
-      if (isNewTenant) {
-        // Save the new tenant data
-        const response = await axios.post('http://127.0.0.1:8000/api/tenant/', formData);
-        setTenant(response.data);
-        setIsNewTenant(false);
-        Swal.fire({
-          icon: 'success',
-          title: 'Success!',
-          text: 'Tenant information added successfully!',
-          confirmButtonText: 'OK',
-        });
-      } else {
-        // Update the existing tenant data
-        await axios.put(`http://127.0.0.1:8000/api/tenant/1`, formData); // Assuming tenant ID is 1
+      // Update the existing tenant data
+      if (tenantId) {
+        await axios.put(`http://127.0.0.1:8000/api/tenant/${tenantId}/`, formData); // PUT request to update tenant data
         setTenant(formData);
         Swal.fire({
           icon: 'success',
@@ -68,8 +67,8 @@ const Profile = () => {
           text: 'Tenant information updated successfully!',
           confirmButtonText: 'OK',
         });
+        setEditing(false);
       }
-      setEditing(false);
     } catch (error) {
       console.error('Error saving tenant data:', error);
       Swal.fire({
@@ -98,6 +97,7 @@ const Profile = () => {
           <h1 className="profile__header">Tenant Profile</h1>
 
           <div className="profile__details">
+            {/* Name Field */}
             <div className="profile__info">
               <label>Name</label>
               {editing ? (
@@ -113,6 +113,7 @@ const Profile = () => {
               )}
             </div>
 
+            {/* Contact Info Field */}
             <div className="profile__info">
               <label>Contact Info</label>
               {editing ? (
@@ -128,6 +129,7 @@ const Profile = () => {
               )}
             </div>
 
+            {/* Email Field */}
             <div className="profile__info">
               <label>Email</label>
               {editing ? (
@@ -142,6 +144,38 @@ const Profile = () => {
                 <span>{tenant.email}</span>
               )}
             </div>
+
+            {/* Username Field */}
+            <div className="profile__info">
+              <label>Username</label>
+              {editing ? (
+                <input
+                  type="text"
+                  name="username"
+                  value={formData.username}
+                  onChange={handleChange}
+                  className="profile__input"
+                />
+              ) : (
+                <span>{tenant.username}</span>
+              )}
+            </div>
+
+            {/* Password Field */}
+            <div className="profile__info">
+              <label>Password</label>
+              {editing ? (
+                <input
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  className="profile__input"
+                />
+              ) : (
+                <span>********</span> // Display "****" for password
+              )}
+            </div>
           </div>
 
           <div className="profile__buttons">
@@ -150,11 +184,9 @@ const Profile = () => {
                 <button onClick={handleSaveEdit} className="profile__button save">
                   Save
                 </button>
-                {!isNewTenant && (
-                  <button onClick={handleCancelEdit} className="profile__button cancel">
-                    Cancel
-                  </button>
-                )}
+                <button onClick={handleCancelEdit} className="profile__button cancel">
+                  Cancel
+                </button>
               </>
             ) : (
               <button onClick={handleEditClick} className="profile__button edit">

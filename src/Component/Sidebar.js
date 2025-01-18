@@ -26,6 +26,10 @@ const Sidebar = () => {
           <FaTools className="sidebar__icon" />
           <a href='/maintenance'>Maintenance</a>   
         </li>
+        <li className="sidebar__menu-item">
+          <FaTools className="sidebar__icon" />
+          <a href='/logout'>Logout</a>   
+        </li>
        
       </ul>
     </div>
