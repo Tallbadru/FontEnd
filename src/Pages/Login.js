@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./Login.css";
 
+const baseUrl = process.env.REACT_APP_BACKEND_URL;
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,7 +16,7 @@ const Login = () => {
     };
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/login/", {
+      const response = await fetch("${baseUrl}/login/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
