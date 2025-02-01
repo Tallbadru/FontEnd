@@ -14,10 +14,10 @@ const Sidebar = () => {
           <FaBuilding className="sidebar__icon" />
           <a href='/properties'>Properties</a>    
         </li>
-        <li className="sidebar__menu-item">
+        {/* <li className="sidebar__menu-item">
           <FaUsers className="sidebar__icon" />
           <a href='/tenantInfo'>TenantsInfo</a>   
-        </li>
+        </li> */}
         <li className="sidebar__menu-item">
           <FaMoneyBillWave className="sidebar__icon" />
           <a href='/rentPayments'>Rent Payments</a>  
